@@ -5,361 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Readium — Books Archive</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --ink: #171b21;
-      --ink-soft: #1f2530;
-      --paper: #f2e9d3;
-      --paper-dim: #e7dcc0;
-      --brass: #b8923f;
-      --brass-bright: #d4ac57;
-      --moss: #48594f;
-      --text-dark: #2a241c;
-      --text-light: #ece4d1;
-      --text-muted: #9aa2ad;
-      --radius: 2px;
-    }
-    
-    * {
-      box-sizing: border-box;
-    }
-    
-    html {
-      -webkit-text-size-adjust: 100%;
-    }
-    
-    body {
-      margin: 0;
-      background: var(--ink);
-      color: var(--text-light);
-      font-family: 'Work Sans', sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
-    
-    /* subtle paper-grain texture on the dark ground */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: .05;
-      background-image: radial-gradient(circle at 1px 1px, #fff 1px, transparent 0);
-      background-size: 3px 3px;
-      z-index: 0;
-    }
-    
-    header {
-      position: relative;
-      z-index: 1;
-      padding: 3.2rem 1.25rem 2.4rem;
-      max-width: 1100px;
-      margin: 0 auto;
-      border-bottom: 1px solid rgba(184, 146, 63, .25);
-    }
-    
-    .eyebrow {
-      font-family: 'Space Mono', monospace;
-      font-size: .72rem;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--brass-bright);
-      display: flex;
-      align-items: center;
-      gap: .6rem;
-    }
-    
-    .eyebrow::before {
-      content: "";
-      width: 22px;
-      height: 1px;
-      background: var(--brass-bright);
-      display: inline-block;
-    }
-    
-    h1 {
-      font-family: 'Fraunces', serif;
-      font-style: italic;
-      font-weight: 500;
-      font-size: clamp(2.1rem, 7vw, 3.6rem);
-      line-height: 1.05;
-      margin: .6rem 0 .8rem;
-      color: var(--text-light);
-      letter-spacing: -.01em;
-    }
-    
-    header p.sub {
-      max-width: 46ch;
-      color: var(--text-muted);
-      font-size: .98rem;
-      line-height: 1.55;
-      margin: 0;
-    }
-    
-    main {
-      position: relative;
-      z-index: 1;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 2.4rem 1.25rem 2.4rem;
-    }
-    
-    .archive-status {
-      font-family: 'Space Mono', monospace;
-      font-size: .78rem;
-      color: var(--text-muted);
-      margin-bottom: 1.4rem;
-      min-height: 1.2em;
-      display: flex;
-      align-items: center;
-      gap: .5rem;
-    }
-    
-    .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--brass-bright);
-      animation: pulse 1.4s ease-in-out infinite;
-      flex-shrink: 0;
-    }
-    
-    @keyframes pulse {
-      
-      0%,
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-      
-      50% {
-        opacity: .35;
-        transform: scale(.7);
-      }
-    }
-    
-    .search-row {
-      margin-bottom: 1.4rem;
-    }
-    
-    .search-input {
-      width: 100%;
-      max-width: 360px;
-      font-family: 'Work Sans', sans-serif;
-      font-size: .88rem;
-      color: var(--text-light);
-      background: rgba(255, 255, 255, .04);
-      border: 1px solid rgba(184, 146, 63, .3);
-      border-radius: var(--radius);
-      padding: .6rem .8rem;
-    }
-    
-    .search-input::placeholder {
-      color: var(--text-muted);
-    }
-    
-    .search-input:focus-visible {
-      outline: 2px solid var(--brass-bright);
-      outline-offset: 2px;
-    }
-    
-    .no-results {
-      font-family: 'Space Mono', monospace;
-      font-size: .85rem;
-      color: var(--text-muted);
-    }
-    
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: .9rem;
-    }
-    
-    @media(min-width:560px) {
-      .grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1.2rem;
-      }
-    }
-    
-    @media(min-width:820px) {
-      .grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-    
-    @media(min-width:1080px) {
-      .grid {
-        grid-template-columns: repeat(5, 1fr);
-      }
-    }
-    
-    /* ---- Catalog card ---- */
-    .card {
-      background: var(--paper);
-      border-radius: var(--radius);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 20px -12px rgba(0, 0, 0, .6);
-      opacity: 0;
-      transform: translateY(10px);
-      animation: rise .5s ease forwards;
-    }
-    
-    @keyframes rise {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .cover-wrap {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 3/4;
-      background: var(--paper-dim);
-      overflow: hidden;
-    }
-    
-    .cover-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform .5s ease;
-    }
-    
-    .card:hover .cover-wrap img {
-      transform: scale(1.045);
-    }
-    
-    .card-body {
-      padding: .7rem .75rem .6rem;
-      color: var(--text-dark);
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .card-title {
-      font-family: 'Fraunces', serif;
-      font-weight: 600;
-      font-size: .92rem;
-      line-height: 1.25;
-      margin: 0 0 .25rem;
-    }
-    
-    .card-author {
-      font-size: .76rem;
-      color: #5c5342;
-      margin: 0;
-      flex: 1;
-    }
-    
-    .slip {
-      font-family: 'Space Mono', monospace;
-      font-size: .62rem;
-      letter-spacing: .03em;
-      color: var(--moss);
-      border-top: 1px dashed rgba(72, 89, 79, .4);
-      padding: .4rem .75rem .5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(72, 89, 79, .06);
-    }
-    
-    /* ---- Skeleton loading state ---- */
-    .skeleton {
-      background: var(--paper-dim);
-    }
-    
-    .skeleton .cover-wrap {
-      background: linear-gradient(100deg, var(--paper-dim) 30%, #f6efdb 50%, var(--paper-dim) 70%);
-      background-size: 200% 100%;
-      animation: shimmer 1.3s ease-in-out infinite;
-    }
-    
-    .skeleton .line {
-      height: .6rem;
-      border-radius: 2px;
-      background: linear-gradient(100deg, #e2d6b0 30%, #f2e7c6 50%, #e2d6b0 70%);
-      background-size: 200% 100%;
-      animation: shimmer 1.3s ease-in-out infinite;
-      margin: .35rem 0;
-    }
-    
-    .skeleton .line.short {
-      width: 60%;
-    }
-    
-    @keyframes shimmer {
-      0% {
-        background-position: 200% 0;
-      }
-      
-      100% {
-        background-position: -200% 0;
-      }
-    }
-    
-    /* ---- Error state ---- */
-    .error-box {
-      font-family: 'Space Mono', monospace;
-      font-size: .85rem;
-      color: var(--text-light);
-      background: var(--ink-soft);
-      border: 1px solid rgba(184, 146, 63, .3);
-      padding: 1.4rem 1.2rem;
-      border-radius: var(--radius);
-      max-width: 420px;
-    }
-    
-    .error-box button {
-      margin-top: .9rem;
-      font-family: 'Space Mono', monospace;
-      font-size: .75rem;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-      background: transparent;
-      color: var(--brass-bright);
-      border: 1px solid var(--brass);
-      padding: .5rem .9rem;
-      border-radius: 1px;
-      cursor: pointer;
-    }
-    
-    .error-box button:hover {
-      background: rgba(184, 146, 63, .12);
-    }
-    
-    .error-box button:focus-visible,
-    .card a:focus-visible {
-      outline: 2px solid var(--brass-bright);
-      outline-offset: 2px;
-    }
-    
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        transition: none !important;
-      }
-    }
-    
-    footer {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      font-family: 'Space Mono', monospace;
-      font-size: .7rem;
-      color: var(--text-muted);
-      padding: 0 1rem 3.2rem;
-    }
-  </style>
+  <link rel="stylesheet" href="index.css">
+  <link rel="preload" href="fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/worksans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/spacemono.woff2" as="font" type="font/woff2" crossorigin>
+
 </head>
 
 <body>
@@ -371,157 +21,50 @@
   </header>
   
   <main>
-    <div class="archive-status" id="status" role="status" aria-live="polite">
-      <span class="dot"></span> Cataloging the archive…
+    <button type="button" class="controls-toggle" id="controlsToggle" aria-expanded="false" aria-controls="drawer">
+      <span aria-hidden="true">&#9776;</span> Browse &amp; filter
+    </button>
+    
+    <div class="drawer-backdrop" id="drawerBackdrop"></div>
+    <aside class="drawer" id="drawer" aria-label="Browse and filter the archive">
+      <div class="drawer-head">
+        <h2>Browse</h2>
+        <button type="button" class="drawer-close" id="drawerCloseBtn" aria-label="Close browse panel">&#10005;</button>
+      </div>
+      
+      <div class="archive-status" id="status" role="status" aria-live="polite">
+        <span class="dot"></span> Cataloging the archive…
+      </div>
+      
+      <div class="search-row" id="searchRow" hidden>
+        <label class="setting-label" for="searchInput">Search</label>
+        <input type="search" id="searchInput" class="search-input" placeholder="Title or author…" aria-label="Search by title or author">
+      </div>
+      
+      <div class="fav-row" id="favRow" hidden>
+        <span class="setting-label">Favorites</span>
+        <button type="button" class="opt-btn fav-toggle" id="favToggle" aria-pressed="false">
+          <span id="favToggleIcon" aria-hidden="true">&#9825;</span>
+          <span>Favorites only</span>
+          <span class="fav-count" id="favCount">0</span>
+        </button>
+      </div>
+    </aside>
+    
+    <div class="content">
+      <p class="no-results" id="noResults" hidden></p>
+      <div class="grid" id="grid"></div>
+      <nav class="pagination" id="pagination" hidden aria-label="Book pages">
+        <button type="button" class="nav-btn" id="prevPageBtn">Prev</button>
+        <span class="page-status" id="pageStatus" aria-live="polite">Page 1 of 1</span>
+        <button type="button" class="nav-btn" id="nextPageBtn">Next</button>
+      </nav>
     </div>
-    <div class="search-row" id="searchRow" hidden>
-      <input type="search" id="searchInput" class="search-input" placeholder="Search by title or author…" aria-label="Search by title or author">
-    </div>
-    <p class="no-results" id="noResults" hidden>No books match "<span id="noResultsQuery"></span>".</p>
-    <div class="grid" id="grid"></div>
   </main>
   
   <footer>readium — a public archive, lovingly overdue.</footer>
   
-  <script>
-    (function() {
-      const grid = document.getElementById('grid');
-      const status = document.getElementById('status');
-      const searchRow = document.getElementById('searchRow');
-      const searchInput = document.getElementById('searchInput');
-      const noResults = document.getElementById('noResults');
-      const noResultsQuery = document.getElementById('noResultsQuery');
-      const SKELETON_COUNT = 10;
-      const MIN_LOADING_MS = 450; // keeps the skeleton from flashing on fast connections
-      
-      let allBooks = [];
-      
-      // Escape any string before it goes into innerHTML, so titles/authors
-      // from books.json can never be interpreted as markup.
-      function escapeHtml(str) {
-        return String(str).replace(/[&<>"']/g, ch => ({
-          '&': '&amp;',
-          '<': '&lt;',
-          '>': '&gt;',
-          '"': '&quot;',
-          "'": '&#39;'
-        } [ch]));
-      }
-      
-      function renderSkeletons(n) {
-        grid.innerHTML = '';
-        for (let i = 0; i < n; i++) {
-          const el = document.createElement('div');
-          el.className = 'card skeleton';
-          el.innerHTML = `
-        <div class="cover-wrap"></div>
-        <div class="card-body">
-          <div class="line"></div>
-          <div class="line short"></div>
-        </div>
-      `;
-          grid.appendChild(el);
-        }
-      }
-      
-      function renderBooks(books) {
-        grid.innerHTML = '';
-        books.forEach((book, i) => {
-          const title = escapeHtml(book.title);
-          const author = escapeHtml(book.author);
-          const cover = escapeHtml(book.cover);
-          const card = document.createElement('a');
-          card.href = `reader.html?id=${encodeURIComponent(book.id)}`;
-          card.setAttribute('aria-label', `${book.title} by ${book.author}`);
-          card.style.textDecoration = 'none';
-          card.style.color = 'inherit';
-          card.className = 'card';
-          card.style.animationDelay = `${Math.min(i * 40, 400)}ms`;
-          card.innerHTML = `
-        <div class="cover-wrap">
-          <img src="${cover}" alt="Cover of ${title}" loading="lazy">
-        </div>
-        <div class="card-body">
-          <p class="card-title">${title}</p>
-          <p class="card-author">${author}</p>
-        </div>
-        <div class="slip">
-          <span>No. ${String(book.id).padStart(3,'0')}</span>
-        </div>
-      `;
-          grid.appendChild(card);
-        });
-      }
-      
-      function applyFilter() {
-        const q = searchInput.value.trim().toLowerCase();
-        if (!q) {
-          noResults.hidden = true;
-          renderBooks(allBooks);
-          setStatus(`${allBooks.length} book${allBooks.length === 1 ? '' : 's'} on the archive`, false);
-          return;
-        }
-        const matches = allBooks.filter(b =>
-          b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q)
-        );
-        if (matches.length === 0) {
-          grid.innerHTML = '';
-          noResults.hidden = false;
-          noResultsQuery.textContent = searchInput.value.trim();
-        } else {
-          noResults.hidden = true;
-          renderBooks(matches);
-        }
-        setStatus(`${matches.length} of ${allBooks.length} book${allBooks.length === 1 ? '' : 's'} shown`, false);
-      }
-      
-      searchInput.addEventListener('input', applyFilter);
-      
-      function setStatus(text, animated) {
-        status.innerHTML = animated ?
-          `<span class="dot"></span> ${text}` :
-          text;
-      }
-      
-      async function loadBooks() {
-        renderSkeletons(SKELETON_COUNT);
-        setStatus('Cataloging the archive…', true);
-        
-        const started = Date.now();
-        try {
-          const res = await fetch('books.json', { cache: 'no-store' });
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          const books = await res.json();
-          
-          const elapsed = Date.now() - started;
-          if (elapsed < MIN_LOADING_MS) {
-            await new Promise(r => setTimeout(r, MIN_LOADING_MS - elapsed));
-          }
-          
-          if (!Array.isArray(books) || books.length === 0) {
-            grid.innerHTML = '';
-            setStatus('The archive is empty right now.', false);
-            return;
-          }
-          
-          allBooks = books;
-          searchRow.hidden = false;
-          applyFilter();
-        } catch (err) {
-          grid.innerHTML = `
-        <div class="error-box">
-          The archive couldn't be reached (${err.message}).<br>
-          Make sure <code>books.json</code> sits next to this page.
-          <div><button id="retry">Try again</button></div>
-        </div>`;
-          setStatus('Catalog unavailable', false);
-          document.getElementById('retry').addEventListener('click', loadBooks);
-        }
-      }
-      
-      loadBooks();
-    })();
-  </script>
+  <script src="index.js" defer></script>
   
 </body>
 

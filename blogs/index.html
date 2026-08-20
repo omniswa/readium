@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Field Notes — Clear Thoughts on Everyday Stuff</title>
+
+  <style>
+    /* --- CSS RESET & VARIABLES --- */
+    
+    @font-face {
+      font-family: "Fraunces";
+      src: url("../fonts/fraunces.ttf");
+      font-weight: 380 550;
+      font-display: swap;
+    }
+    
+    
+    @font-face {
+      font-family: "Work Sans";
+      src: url("../fonts/worksans.ttf");
+      font-weight: 380 550;
+      font-display: swap;
+    }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    :root {
+      --bg: #F8F7F4;
+      --text: #191918;
+      --muted: #6B6A65;
+      --line: #E2DFD6;
+      --accent: #C24A22;
+      --ad-bg: #F0EFEA;
+      --font-serif: 'Fraunces', Georgia, serif;
+      --font-sans: 'Work Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --container-width: 1020px;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    ::selection {
+      background: var(--text);
+      color: var(--bg);
+    }
+    
+    /* --- LAYOUT UTILITIES --- */
+    .container {
+      max-width: var(--container-width);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    
+    .section-border {
+      border-bottom: 1px solid var(--line);
+    }
+    
+    /* --- HEADER & NAVIGATION --- */
+    header {
+      position: sticky;
+      top: 0;
+      background-color: rgba(248, 247, 244, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+      z-index: 100;
+    }
+    
+    .nav-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem;
+    }
+    
+    .logo {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 500;
+      text-decoration: none;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+    
+    /* Desktop Navigation */
+    .desktop-nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    
+    .desktop-nav a {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    
+    .desktop-nav a:hover,
+    .desktop-nav a.nav-cta {
+      color: var(--text);
+    }
+    
+    .desktop-nav a.nav-cta {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    
+    /* Mobile Toggle Button */
+    .menu-toggle {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--line);
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-family: var(--font-sans);
+      color: var(--text);
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    
+    /* Mobile Drawer */
+    .mobile-drawer {
+      display: none;
+      position: fixed;
+      top: 70px;
+      left: 0;
+      width: 100%;
+      height: calc(100vh - 70px);
+      background-color: var(--bg);
+      padding: 2.5rem 1.5rem;
+      flex-direction: column;
+      justify-content: space-between;
+      border-top: 1px solid var(--line);
+      overflow-y: auto;
+    }
+    
+    .mobile-drawer.active {
+      display: flex;
+    }
+    
+    .mobile-nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+    
+    .mobile-nav-links a {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      text-decoration: none;
+      color: var(--text);
+      display: block;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 1rem;
+    }
+    
+    .mobile-drawer-meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    
+    /* --- HERO SECTION --- */
+    .hero {
+      padding: 4.5rem 0 3.5rem;
+    }
+    
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.4rem, 5.5vw, 3.8rem);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      max-width: 820px;
+      margin-bottom: 2rem;
+    }
+    
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--line);
+    }
+    
+    .meta-tag {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    
+    .hero-desc {
+      font-size: 1.15rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    
+    /* --- COMMON SPLIT SECTIONS --- */
+    .section-padding {
+      padding: 4.5rem 0;
+    }
+    
+    .split-layout {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 2.5rem;
+    }
+    
+    .section-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      line-height: 1.2;
+    }
+    
+    /* --- TOPICS LIST --- */
+    .topics-list {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .topic-item {
+      display: grid;
+      grid-template-columns: 40px 1fr 1.5fr;
+      gap: 1.5rem;
+      padding: 1.8rem 0;
+      border-top: 1px solid var(--line);
+      align-items: baseline;
+    }
+    
+    .topic-item:last-child {
+      padding-bottom: 0;
+    }
+    
+    .topic-num {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    
+    .topic-heading {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 400;
+    }
+    
+    .topic-desc {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    
+    /* --- WHAT TO EXPECT (GRID) --- */
+    .expect-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem 2rem;
+    }
+    
+    .expect-item {
+      border-left: 1px solid var(--line);
+      padding-left: 1.25rem;
+    }
+    
+    .expect-item span {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    
+    .expect-item h4 {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 400;
+      margin: 0.4rem 0 0.5rem;
+    }
+    
+    .expect-item p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    
+    /* --- MONETIZATION & SPONSOR SLOT --- */
+    .sponsor-section {
+      background-color: var(--ad-bg);
+      border-radius: 4px;
+      padding: 1.75rem 2rem;
+      margin-top: 2.5rem;
+      border: 1px dashed #D0CCC2;
+    }
+    
+    .sponsor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.8rem;
+    }
+    
+    .sponsor-tag {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+    
+    .sponsor-link {
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .sponsor-content h5 {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 500;
+      margin-bottom: 0.3rem;
+    }
+    
+    .sponsor-content p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    
+    /* --- NEWSLETTER SIGNUP --- */
+    .signup-wrap {
+      max-width: 600px;
+    }
+    
+    .signup-form {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      border-bottom: 2px solid var(--text);
+      padding-bottom: 0.5rem;
+    }
+    
+    .signup-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      color: var(--text);
+      outline: none;
+    }
+    
+    .signup-input::placeholder {
+      color: #9E9D97;
+    }
+    
+    .signup-btn {
+      background: transparent;
+      border: none;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text);
+      cursor: pointer;
+      padding: 0.25rem 0.5rem;
+      transition: color 0.2s;
+    }
+    
+    .signup-btn:hover {
+      color: var(--accent);
+    }
+    
+    /* --- FOOTER --- */
+    footer {
+      padding: 3rem 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    
+    .footer-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    
+    .footer-links a:hover {
+      color: var(--text);
+    }
+    
+    /* --- MOBILE RESPONSIVENESS --- */
+    @media (max-width: 768px) {
+      .desktop-nav {
+        display: none;
+      }
+      
+      .menu-toggle {
+        display: block;
+      }
+      
+      .hero-grid,
+      .split-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .topic-item {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+        padding: 1.25rem 0;
+      }
+      
+      .topic-num {
+        display: none;
+      }
+      
+      .expect-grid {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+      }
+      
+      .signup-form {
+        flex-direction: column;
+        align-items: flex-start;
+        border-bottom: none;
+        gap: 1rem;
+      }
+      
+      .signup-input {
+        width: 100%;
+        border-bottom: 2px solid var(--text);
+        padding: 0.5rem 0;
+      }
+      
+      .signup-btn {
+        padding: 0.6rem 0;
+      }
+      
+      .section-padding {
+        padding: 3.5rem 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  
+  <!-- HEADER -->
+  <header>
+    <div class="container nav-wrapper">
+      <a href="#" class="logo">Field Notes</a>
+      
+      <!-- Desktop Links -->
+      <nav class="desktop-nav">
+        <a href="#about">About</a>
+        <a href="#topics">What We Cover</a>
+        <a href="#expectations">What to Expect</a>
+        <a href="#subscribe" class="nav-cta">Join Free &rarr;</a>
+      </nav>
+      
+      <!-- Mobile Button -->
+      <button id="menu-btn" class="menu-toggle" aria-expanded="false" aria-label="Toggle Menu">
+        <span id="menu-label">Menu +</span>
+      </button>
+    </div>
+    
+    <!-- Mobile Drawer -->
+    <div id="mobile-menu" class="mobile-drawer">
+      <nav class="mobile-nav-links">
+        <a href="#about" class="mobile-link">About the Site</a>
+        <a href="#topics" class="mobile-link">What We Cover</a>
+        <a href="#expectations" class="mobile-link">The Format</a>
+        <a href="#subscribe" class="mobile-link" style="color: var(--accent);">Get the Newsletter &rarr;</a>
+      </nav>
+      <div class="mobile-drawer-meta">
+        <p>A casual weekly newsletter breaking down tech, work, and internet culture.</p>
+      </div>
+    </div>
+  </header>
+  
+  <!-- HERO -->
+  <section class="hero section-border">
+    <div class="container">
+      <span class="badge">A Weekly Digested Read</span>
+      <h1 class="hero-title">
+        The interesting stuff happening in tech, culture, and work.
+      </h1>
+      
+      <div class="hero-grid">
+        <div class="meta-tag">
+          Every Thursday Morning
+        </div>
+        <div class="hero-desc">
+          No jargon, no 50-page PDFs, and no hype. Just honest takes, handy tools, and curious rabbit holes to help you understand where the internet and daily life are heading.
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- ABOUT / EDITORIAL FOCUS -->
+  <section id="about" class="section-padding section-border">
+    <div class="container split-layout">
+      <div>
+        <span class="section-label">01 / Why We Write</span>
+        <h2 class="section-title">Cut through the noise without feeling overwhelmed.</h2>
+      </div>
+      <div>
+        <p style="margin-bottom: 1.25rem; font-size: 1.05rem;">
+          The internet is full of endless hot takes and clickbait. Most of it isn't actually useful—it’s just loud. <em>Field Notes</em> is our attempt to slow down and share things that actually matter to your everyday routine.
+        </p>
+        <p style="color: var(--muted); font-size: 1rem; margin-bottom: 2rem;">
+          We dig into tools that actually save you time, trends that are changing how we earn and live, and fascinating cultural shifts you might have missed—all written in simple, friendly, everyday English.
+        </p>
+        
+        <!-- NON-INTRUSIVE SPONSOR / AD SLOT -->
+        <aside class="sponsor-section" aria-label="Sponsored recommendation">
+          <div class="sponsor-header">
+            <span class="sponsor-tag">Sponsored Partner</span>
+            <a href="#" class="sponsor-link">Learn More &rarr;</a>
+          </div>
+          <div class="sponsor-content">
+            <h5>Simple Tools Co. — Declutter your daily digital workspace</h5>
+            <p>A minimalist workspace organizer built for people who want fewer tabs and more focus. Free for readers of Field Notes this month.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+  
+  <!-- KEY TOPICS -->
+  <section id="topics" class="section-padding section-border">
+    <div class="container">
+      <div style="margin-bottom: 2.5rem;">
+        <span class="section-label">02 / Everyday Themes</span>
+        <h2 class="section-title">What you’ll find in each issue</h2>
+      </div>
+      
+      <div class="topics-list">
+        <!-- Topic 1 -->
+        <div class="topic-item">
+          <span class="topic-num">/01</span>
+          <h3 class="topic-heading">Practical Tech</h3>
+          <p class="topic-desc">
+            AI tricks that actually work, apps that won’t clutter your phone, and sensible hardware reviews without the technical fluff.
+          </p>
+        </div>
+        
+        <!-- Topic 2 -->
+        <div class="topic-item">
+          <span class="topic-num">/02</span>
+          <h3 class="topic-heading">Work & Money</h3>
+          <p class="topic-desc">
+            Side projects, realistic remote work habits, and practical ways regular people are building sustainable careers today.
+          </p>
+        </div>
+        
+        <!-- Topic 3 -->
+        <div class="topic-item">
+          <span class="topic-num">/03</span>
+          <h3 class="topic-heading">Internet Culture</h3>
+          <p class="topic-desc">
+            Why certain trends blow up, weird online subcultures, and how digital habits are shaping the way we socialize.
+          </p>
+        </div>
+        
+        <!-- Topic 4 -->
+        <div class="topic-item">
+          <span class="topic-num">/04</span>
+          <h3 class="topic-heading">Curious Rabbit Holes</h3>
+          <p class="topic-desc">
+            Short, fun deep dives into random interesting questions you never knew you wanted answered.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- WHAT TO EXPECT -->
+  <section id="expectations" class="section-padding section-border">
+    <div class="container split-layout">
+      <div>
+        <span class="section-label">03 / The Format</span>
+        <h2 class="section-title">What to expect when you read</h2>
+      </div>
+      
+      <div class="expect-grid">
+        <div class="expect-item">
+          <span>01. Read Time</span>
+          <h4>A 5-minute coffee read</h4>
+          <p>Short, punchy paragraphs you can skim on your commute or read casually over breakfast.</p>
+        </div>
+        
+        <div class="expect-item">
+          <span>02. Schedule</span>
+          <h4>Once a week, every Thursday</h4>
+          <p>We send one great email a week. No daily spam or mid-week promo blasts.</p>
+        </div>
+        
+        <div class="expect-item">
+          <span>03. Honest Monetization</span>
+          <h4>Tasteful, clearly marked sponsors</h4>
+          <p>We keep the lights on with clean, relevant sponsor spots. No creepy pop-ups, autoplay videos, or fake reviews.</p>
+        </div>
+        
+        <div class="expect-item">
+          <span>04. Freedom</span>
+          <h4>100% free to read</h4>
+          <p>No paywalls locking you out midway through. One click to unsubscribe if it's ever not for you.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- SUBSCRIBE / SIGNUP -->
+  <section id="subscribe" class="section-padding section-border">
+    <div class="container">
+      <div class="signup-wrap">
+        <span class="badge">Join 15,000+ Readers</span>
+        <h2 class="section-title" style="margin-bottom: 0.75rem;">Get next Thursday’s issue in your inbox.</h2>
+        <p style="color: var(--muted); font-size: 0.95rem;">
+          Free, friendly, and easy to read. Put your email in below and we’ll send you our favorite issue from this month right away.
+        </p>
+        
+        <form class="signup-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
+          <input type="email" class="signup-input" placeholder="Your best email address..." required />
+          <button type="submit" class="signup-btn">Subscribe Free &rarr;</button>
+        </form>
+      </div>
+    </div>
+  </section>
+  
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-flex">
+      <div>
+        &copy; 2026 Field Notes. Written with care.
+      </div>
+      <div class="footer-links">
+        <a href="#about">About</a>
+        <a href="#topics">Themes</a>
+        <a href="#">Sponsor an Issue</a>
+        <a href="#">Privacy</a>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- LIGHTWEIGHT VANILLA JS FOR MOBILE MENU -->
+  <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const menuLabel = document.getElementById('menu-label');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+    
+    let isOpen = false;
+    
+    function toggleMenu() {
+      isOpen = !isOpen;
+      menuBtn.setAttribute('aria-expanded', isOpen);
+      
+      if (isOpen) {
+        mobileMenu.classList.add('active');
+        menuLabel.textContent = 'Close ×';
+        document.body.style.overflow = 'hidden';
+      } else {
+        mobileMenu.classList.remove('active');
+        menuLabel.textContent = 'Menu +';
+        document.body.style.overflow = '';
+      }
+    }
+    
+    menuBtn.addEventListener('click', toggleMenu);
+    
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (isOpen) toggleMenu();
+      });
+    });
+  </script>
+  
+</body>
+
+</html>

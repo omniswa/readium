@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[Post Title — 50–60 characters, include your main keyword] | [Site Name]</title>
+  <meta name="description" content="[150–160 character summary of the post. Include your main keyword naturally and say what the reader gets.]">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://example.com/blog/[post-slug]">
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="[Post Title]">
+  <meta property="og:description" content="[Same or shorter version of the meta description above.]">
+  <meta property="og:url" content="https://example.com/blog/[post-slug]">
+  <meta property="og:site_name" content="[Site Name]">
+  <meta property="og:image" content="https://example.com/images/[post-slug]-og.jpg">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="[Post Title]">
+  <meta name="twitter:description" content="[Same as meta description.]">
+  
+  <meta name="theme-color" content="#F7F5EC">
+  
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "[Post Title]",
+      "description": "[Meta description]",
+      "datePublished": "[YYYY-MM-DD]",
+      "dateModified": "[YYYY-MM-DD]",
+      "author": { "@type": "Person", "name": "[Author Name]" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "[Site Name]"
+      },
+      "mainEntityOfPage": "https://example.com/blog/[post-slug]"
+    }
+  </script>
+  
+  <link rel="preload" href="../fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../fonts/worksans.woff2" as="font" type="font/woff2" crossorigin>
+  
+  <style>
+    @font-face {
+      font-family: "Fraunces";
+      src: url("../fonts/fraunces.woff2");
+      font-weight: 300 700;
+      font-display: swap;
+      size-adjust: 100%;
+    }
+    
+    @font-face {
+      font-family: "Work Sans";
+      src: url("../fonts/worksans.woff2");
+      font-weight: 380 550;
+      font-display: swap;
+    }
+    
+    :root {
+      --bg: #F7F5EC;
+      --bg-alt: #EFEBDD;
+      --ink: #1F2A20;
+      --ink-soft: #4B5A4C;
+      --accent: #9C7A00;
+      --accent-deep: #7C5C00;
+      --line: #D8D2BE;
+      --white: #FFFDF8;
+      --display: "Fraunces", Georgia, serif;
+      --body: "Work Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --max: 42rem;
+    }
+    
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+    
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+    
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 1.0625rem;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    img,
+    svg {
+      max-width: 100%;
+      display: block;
+    }
+    
+    a {
+      color: var(--accent-deep);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+    
+    a:hover {
+      color: var(--ink);
+    }
+    
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+    }
+    
+    .wrap {
+      max-width: var(--max);
+      margin-inline: auto;
+      padding-inline: 1.25rem;
+    }
+    
+    /* -------- Header -------- */
+    .site-header {
+      margin-bottom: 3rem;
+      border-bottom: 1px solid var(--line);
+      padding-block: 0.9rem;
+    }
+    
+    .site-header .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    
+    .brand {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+    }
+    
+    .brand:hover {
+      color: var(--accent-deep);
+    }
+    
+    .btn {
+      font-family: var(--body);
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: var(--white);
+      padding: 0.55rem 1rem;
+      border-radius: 999px;
+      cursor: pointer;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    
+    .btn:hover {
+      background: var(--accent-deep);
+      border-color: var(--accent-deep);
+    }
+    
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+    
+    .btn-ghost:hover {
+      background: var(--bg-alt);
+      color: var(--ink);
+    }
+    
+    /* -------- Article header / hero -------- */
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      margin: 0 0 0.6rem;
+    }
+    
+    h1 {
+      font-family: var(--display);
+      font-size: clamp(1.9rem, 5vw, 2.6rem);
+      line-height: 1.15;
+      margin: 0 0 0.75rem;
+    }
+    
+    .dek {
+      font-size: 1.1rem;
+      color: var(--ink-soft);
+      margin: 0 0 1rem;
+      max-width: 38ch;
+    }
+    
+    .byline {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      margin-bottom: 1.5rem;
+    }
+    
+    .byline .dot {
+      opacity: 0.5;
+    }
+    
+    .hero {
+      aspect-ratio: 16 / 9;
+      background: var(--bg-alt);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 1.75rem;
+    }
+    
+    .hero svg {
+      width: 100%;
+      height: 100%;
+    }
+    
+    /* -------- Article body -------- */
+    article :is(h2, h3) {
+      font-family: var(--display);
+      color: var(--ink);
+      line-height: 1.25;
+    }
+    
+    h2 {
+      font-size: 1.5rem;
+      margin: 2.25rem 0 0.75rem;
+    }
+    
+    h3 {
+      font-size: 1.15rem;
+      margin: 1.5rem 0 0.5rem;
+    }
+    
+    p {
+      margin: 0 0 1.1rem;
+    }
+    
+    article p,
+    article li {
+      max-width: 65ch;
+    }
+    
+    hr {
+      border: 0;
+      height: 22px;
+      margin: 2.5rem 0;
+      background: no-repeat center / 20px 20px url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="%239C7A00"/><circle cx="4" cy="12" r="2" fill="%23D8D2BE"/><circle cx="20" cy="12" r="2" fill="%23D8D2BE"/></svg>');
+      position: relative;
+    }
+    
+    hr::before,
+    hr::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: calc(50% - 18px);
+      border-top: 1px solid var(--line);
+    }
+    
+    hr::before {
+      left: 0;
+    }
+    
+    hr::after {
+      right: 0;
+    }
+    
+    .styled-list {
+      list-style: none;
+      margin: 0 0 1.25rem;
+      padding: 0;
+    }
+    
+    .styled-list li {
+      position: relative;
+      padding-left: 1.6rem;
+      margin-bottom: 0.55rem;
+    }
+    
+    .styled-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 0.55em;
+      height: 0.55em;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+    
+    .step-list {
+      list-style: none;
+      counter-reset: step;
+      margin: 0 0 1.25rem;
+      padding: 0;
+    }
+    
+    .step-list li {
+      counter-increment: step;
+      position: relative;
+      padding-left: 2.75rem;
+      margin-bottom: 1.1rem;
+    }
+    
+    .step-list li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--white);
+      background: var(--ink);
+      border-radius: 50%;
+    }
+    
+    .step-list strong {
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+    
+    blockquote {
+      margin: 1.75rem 0;
+      padding: 0.25rem 0 0.25rem 1.1rem;
+      border-left: 3px solid var(--accent);
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--ink-soft);
+    }
+    
+    .table-wrap {
+      margin: 1.5rem 0 2rem;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    
+    caption {
+      display: grid;
+      text-align: left;
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      margin-bottom: 0.5rem;
+      margin-left: 0.5rem;
+      width: 100%;
+    }
+    
+    @media (max-width: 639px) {
+      
+      table,
+      thead,
+      tbody,
+      tr,
+      th,
+      td {
+        display: block;
+        width: 100%;
+      }
+      
+      thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+      
+      tbody tr {
+        background: var(--white);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 0.85rem 1rem;
+        margin-bottom: 0.75rem;
+      }
+      
+      tbody td {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.4rem 0;
+        border-bottom: 1px dashed var(--line);
+        text-align: right;
+      }
+      
+      tbody td:last-child {
+        border-bottom: 0;
+      }
+      
+      tbody td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--ink-soft);
+        text-align: left;
+      }
+    }
+    
+    @media (min-width: 640px) {
+      .table-wrap {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      
+      thead th {
+        text-align: left;
+        background: var(--bg-alt);
+        font-family: var(--mono);
+        font-size: 0.78rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        padding: 0.75rem 1rem;
+      }
+      
+      tbody td {
+        padding: 0.75rem 1rem;
+        border-top: 1px solid var(--line);
+      }
+      
+      tbody tr:nth-child(even) {
+        background: var(--bg-alt);
+      }
+    }
+    
+    
+    footer {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-block: 2rem;
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+    }
+    
+    @media (max-width: 480px) {
+      .site-header .wrap {
+        gap: 0.5rem;
+      }
+      
+      .btn {
+        padding: 0.5rem 0.85rem;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="#top">[Site Name]</a>
+      <button class="btn" type="button" data-open-modal>Join Telegram</button>
+    </div>
+  </header>
+  
+  <main id="top">
+    <div class="wrap">
+      <article>
+        <header>
+          <p class="eyebrow">[Category]</p>
+          <h1>[Post Title Goes Here]</h1>
+          <p class="dek">[One or two sentences that tell the reader exactly what they'll get from this post and why it's worth their time.]</p>
+          <p class="byline">
+            <span>By omniswa</span>
+            <span class="dot">·</span>
+            <span>November 18, 2002</span>
+            <span class="dot">·</span>
+            <span>9 min read</span>
+          </p>
+        </header>
+        
+        <div class="hero" aria-hidden="true">
+          <svg viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Decorative hero graphic">
+            <rect width="640" height="360" fill="#EFEBDD" />
+            <circle cx="150" cy="180" r="70" fill="#9C7A00" opacity="0.85" />
+            <circle cx="330" cy="120" r="45" fill="#1F2A20" opacity="0.75" />
+            <circle cx="480" cy="230" r="60" fill="#D8D2BE" />
+            <path d="M60 300 C220 250 420 320 580 260" stroke="#1F2A20" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.5" />
+          </svg>
+        </div>
+        
+        <p>[Opening paragraph. State the problem the reader has, or the outcome they want, in plain language. This is also a natural place to work in your primary keyword once, without forcing it.]</p>
+        
+        <hr>
+        
+        <h2>[Section heading — e.g. "What you'll need"]</h2>
+        <ul class="styled-list">
+          <li>[List item one]</li>
+          <li>[List item two]</li>
+          <li>[List item three]</li>
+          <li>[List item four]</li>
+        </ul>
+        
+        <h2>[Section heading — e.g. "Step-by-step"]</h2>
+        <ol class="step-list">
+          <li>
+            <strong>[Step one — short label]</strong>
+            [One or two sentences explaining the step.]
+          </li>
+          <li>
+            <strong>[Step two — short label]</strong>
+            [One or two sentences explaining the step.]
+          </li>
+          <li>
+            <strong>[Step three — short label]</strong>
+            [One or two sentences explaining the step.]
+          </li>
+          <li>
+            <strong>[Step four — short label]</strong>
+            [One or two sentences explaining the step.]
+          </li>
+        </ol>
+        
+        <blockquote>
+          [An optional pull quote or key takeaway, pulled from the surrounding text or a source you're citing.]
+        </blockquote>
+        
+        <hr>
+        
+        <h2>[Section heading — e.g. "Comparing your options"]</h2>
+        <p>[One sentence framing what the table below shows and why it matters.]</p>
+        
+        <div class="table-wrap">
+          <table>
+            <caption>[Short caption describing the table]</caption>
+            <thead>
+              <tr>
+                <th scope="col">[Column 1]</th>
+                <th scope="col">[Column 2]</th>
+                <th scope="col">[Column 3]</th>
+                <th scope="col">[Column 4]</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="[Column 1]">[Row 1, value]</td>
+                <td data-label="[Column 2]">[Row 1, value]</td>
+                <td data-label="[Column 3]">[Row 1, value]</td>
+                <td data-label="[Column 4]">[Row 1, value]</td>
+              </tr>
+              <tr>
+                <td data-label="[Column 1]">[Row 2, value]</td>
+                <td data-label="[Column 2]">[Row 2, value]</td>
+                <td data-label="[Column 3]">[Row 2, value]</td>
+                <td data-label="[Column 4]">[Row 2, value]</td>
+              </tr>
+              <tr>
+                <td data-label="[Column 1]">[Row 3, value]</td>
+                <td data-label="[Column 2]">[Row 3, value]</td>
+                <td data-label="[Column 3]">[Row 3, value]</td>
+                <td data-label="[Column 4]">[Row 3, value]</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2>[Section heading — e.g. "Common questions"]</h2>
+        <p>[Closing section — FAQs, caveats, or a wrap-up paragraph. This is also a good place for a second, more natural mention of your target keyword.]</p>
+        
+      </article>
+    </div>
+  </main>
+  
+  <footer>
+    <div class="wrap">
+      <p>[Short author bio or site description.]</p>
+      <p>© [YYYY] [Site Name].</p>
+    </div>
+  </footer>
+  
+</body>
+
+</html>
