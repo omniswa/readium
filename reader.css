@@ -338,6 +338,22 @@ body.theme-dark {
   border-color: var(--brass-bright);
 }
 
+.drawer-support-link {
+  display: block;
+  text-align: center;
+  margin-top: 1.4rem;
+  font-family: 'Space Mono', monospace;
+  font-size: .72rem;
+  letter-spacing: .03em;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.drawer-support-link:hover,
+.drawer-support-link:focus-visible {
+  color: var(--brass-bright);
+}
+
 /* ---------- Reading surface ---------- */
 .reader-surface {
   background: var(--read-bg);
