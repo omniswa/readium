@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Readium — Keep the Archive Lit</title>
+  <link rel="stylesheet" href="support.css">
+  <link rel="preload" href="fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/worksans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/spacemono.woff2" as="font" type="font/woff2" crossorigin>
+</head>
+
+<body>
+  
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a href="index.html" class="back-link">&larr; archive</a>
+    </div>
+  </div>
+  
+  <header class="support-hero">
+    <div class="eyebrow">Keeper's Log</div>
+    <h1>Keep the lamp lit.</h1>
+    <p class="sub">
+      Readium has no ads and sells nothing. It runs on a small server, a stack
+      of fonts, and whatever's left in the jar at the end of the month.
+      If it's kept you company on a long night, you can toss something in —
+      but the shelves stay open either way.
+    </p>
+  </header>
+  
+  <main class="support-main">
+    
+    <section class="ledger" aria-labelledby="ledgerTitle">
+      <div class="ledger-head">
+        <h2 id="ledgerTitle">Where it goes</h2>
+        <span class="ledger-sub">Roughly, monthly</span>
+      </div>
+      <ul class="ledger-list">
+        <li>
+          <span class="ledger-item">Server &amp; bandwidth</span>
+          <span class="ledger-dots" aria-hidden="true"></span>
+          <span class="ledger-amount">$14</span>
+        </li>
+        <li>
+          <span class="ledger-item">Storage for scans &amp; covers</span>
+          <span class="ledger-dots" aria-hidden="true"></span>
+          <span class="ledger-amount">$6</span>
+        </li>
+        <li>
+          <span class="ledger-item">Typefaces &amp; small tools</span>
+          <span class="ledger-dots" aria-hidden="true"></span>
+          <span class="ledger-amount">$4</span>
+        </li>
+        <li>
+          <span class="ledger-item">New titles for the shelf</span>
+          <span class="ledger-dots" aria-hidden="true"></span>
+          <span class="ledger-amount">variable</span>
+        </li>
+      </ul>
+    </section>
+    
+    <section class="give" aria-labelledby="giveTitle">
+      <h2 id="giveTitle">Leave what you can</h2>
+      <p class="give-note">One-time, no account needed. Nothing is tracked or sold.</p>
+      
+      <div class="amount-row" id="amountRow" role="group" aria-label="Choose an amount">
+        <button type="button" class="amt-btn" data-amount="3">$3</button>
+        <button type="button" class="amt-btn" data-amount="7">$7</button>
+        <button type="button" class="amt-btn" data-amount="15">$15</button>
+        <div class="amt-custom">
+          <span aria-hidden="true">$</span>
+          <input type="number" id="customAmount" min="1" step="1" inputmode="numeric" placeholder="other">
+        </div>
+      </div>
+      
+      <a href="#" id="giveBtn" class="give-btn">
+        Give <span id="giveAmountLabel">$7</span>
+      </a>
+      <p class="give-fineprint">
+        Opens our payment page in a new tab. Set your own link in
+        <code>support.js</code> (<code>DONATE_URL</code>) before this goes live.
+      </p>
+    </section>
+    
+    <p class="skip-line">
+      Would rather just read? <a href="index.html">Back to the shelves &rarr;</a>
+    </p>
+    
+  </main>
+  
+  <footer class="support-footer">readium — a public archive, lovingly overdue.</footer>
+  
+  <script src="support.js" defer></script>
+</body>
+
+</html>

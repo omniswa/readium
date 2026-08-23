@@ -640,3 +640,15 @@ footer {
   color: var(--text-muted);
   padding: 0 1rem 3.2rem;
 }
+
+.footer-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(154, 162, 173, .5);
+}
+
+.footer-link:hover,
+.footer-link:focus-visible {
+  color: var(--brass-bright);
+  border-bottom-color: var(--brass-bright);
+}
