@@ -361,6 +361,18 @@ body::before {
   z-index: 1;
 }
 
+.support-footer a {
+  color: var(--text-muted);
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(154, 162, 173, .5);
+}
+
+.support-footer a:hover,
+.support-footer a:focus-visible {
+  color: var(--brass-bright);
+  border-bottom-color: var(--brass-bright);
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     transition: none !important;
