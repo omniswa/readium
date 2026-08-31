@@ -1,16 +1,9 @@
 @font-face {
-  font-family: "Fraunces";
-  src: url("../fonts/fraunces.woff2");
+  font-family: "Literata";
+  src: url("../fonts/literata.woff2");
   font-weight: 300 700;
   font-display: swap;
   size-adjust: 100%;
-}
-
-@font-face {
-  font-family: "Work Sans";
-  src: url("../fonts/worksans.woff2");
-  font-weight: 380 550;
-  font-display: swap;
 }
 
 :root {
@@ -22,9 +15,7 @@
   --accent-deep: #7C5C00;
   --line: #D8D2BE;
   --white: #FFFDF8;
-  --display: "Fraunces", Georgia, serif;
-  --body: "Work Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font: "Literata", serif;
   --max: 42rem;
 }
 
@@ -32,6 +23,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  font-family: "Literata";
 }
 
 html {
@@ -42,7 +34,6 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font-family: var(--body);
   font-size: 1.0625rem;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
@@ -92,7 +83,6 @@ input:focus-visible {
 }
 
 .brand {
-  font-family: var(--display);
   font-weight: 700;
   font-size: 1.15rem;
   color: var(--ink);
@@ -105,7 +95,6 @@ input:focus-visible {
 }
 
 .btn {
-  font-family: var(--body);
   font-size: 0.9rem;
   font-weight: 600;
   border: 1px solid var(--ink);
@@ -136,7 +125,6 @@ input:focus-visible {
 
 /* -------- Article header -------- */
 h1 {
-  font-family: var(--display);
   font-size: clamp(1.9rem, 5vw, 2.6rem);
   line-height: 1.15;
   margin: 0 0 0.75rem;
@@ -157,7 +145,6 @@ h1 {
 
 /* -------- Article body -------- */
 article :is(h2, h3) {
-  font-family: var(--display);
   color: var(--ink);
   line-height: 1.25;
 }
@@ -253,7 +240,6 @@ hr::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--display);
   font-weight: 700;
   font-size: 0.95rem;
   color: var(--white);
@@ -270,7 +256,6 @@ blockquote {
   margin: 1.75rem 0;
   padding: 0.25rem 0 0.25rem 1.1rem;
   border-left: 3px solid var(--accent);
-  font-family: var(--display);
   font-style: italic;
   font-size: 1.1rem;
   color: var(--ink-soft);
@@ -346,7 +331,6 @@ table {
   thead th {
     text-align: left;
     background: var(--bg-alt);
-    font-family: var(--mono);
     font-size: 0.78rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -366,9 +350,11 @@ table {
 
 
 footer {
+  text-align: center;
   border-top: 1px solid var(--line);
   margin-top: 3rem;
-  padding-block: 2rem;
+  padding: 1rem;
+  padding-bottom: 4rem;
   font-size: 0.9rem;
   color: var(--ink-soft);
 }
@@ -381,5 +367,246 @@ footer {
   .btn {
     padding: 0.5rem 0.85rem;
     font-size: 0.85rem;
+  }
+}
+
+/* -------- Telegram callout -------- */
+.telegram-cta {
+  display: grid;
+  margin: 2.75rem 0 1rem;
+  padding: 1.5rem;
+  background: var(--ink);
+  border-radius: 14px;
+  gap: 1.1rem;
+}
+
+.telegram-cta__body h3 {
+  color: var(--white);
+  margin: 0 0 0.2rem;
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.telegram-cta__body p {
+  color: #C9D2CA;
+  margin: 0 0 0.9rem;
+  font-size: 0.9rem;
+}
+
+.telegram-cta__body .btn {
+  padding: 0.8rem;
+  display: grid;
+  text-align: center;
+  text-decoration: none;
+  background: transparent;
+  border-color: var(--accent);
+  color: white;
+}
+
+.telegram-cta__body .btn:hover {
+  background: var(--white);
+  border-color: var(--white);
+  color: black;
+}
+
+/* -------- Floating pill nav -------- */
+.pill-nav {
+  gap: 0.3rem;
+  position: fixed;
+  left: 50%;
+  bottom: 1.25rem;
+  transform: translateX(-50%);
+  z-index: 40;
+  display: flex;
+  align-items: stretch;
+  background: var(--ink);
+  color: var(--white);
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(31, 42, 32, 0.28);
+  padding: 0.3rem;
+  max-width: calc(100vw - 1.5rem);
+}
+
+.pill-nav__btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.pill-nav__btn:hover {
+  background: rgba(255, 253, 248, 0.12);
+}
+
+.pill-nav__btn svg {
+  flex: none;
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.pill-nav__label {
+  max-width: 11rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pill-nav__divider {
+  width: 1px;
+  background: rgba(255, 253, 248, 0.18);
+  margin-block: 0.4rem;
+}
+
+/* Icon-only on narrow viewports so the pill never overflows the screen */
+@media (max-width: 639px) {
+  .pill-nav__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  
+  .pill-nav__btn {
+    padding: 0.65rem;
+  }
+}
+
+/* -------- TOC modal -------- */
+.toc-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(31, 42, 32, 0.45);
+  z-index: 50;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+}
+
+.toc-backdrop.is-open {
+  display: flex;
+}
+
+.toc-modal {
+  background: var(--white);
+  width: 100%;
+  max-width: 30rem;
+  border-radius: 18px 18px 0 0;
+  padding: 1.5rem 1.5rem 2rem;
+  max-height: 75vh;
+  overflow-y: auto;
+  box-shadow: 0 -10px 30px rgba(31, 42, 32, 0.2);
+}
+
+@media (min-width: 640px) {
+  .toc-backdrop {
+    align-items: center;
+    padding: 1.5rem;
+  }
+  
+  .toc-modal {
+    border-radius: 16px;
+    max-height: 80vh;
+  }
+}
+
+.toc-modal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.toc-modal__head h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.toc-modal__close {
+  appearance: none;
+  border: 0;
+  background: var(--bg-alt);
+  color: var(--ink);
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.toc-modal__close svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc-list li + li {
+  border-top: 1px solid var(--line);
+}
+
+.toc-list button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  font-size: 0.98rem;
+  color: var(--ink);
+  padding: 0.85rem 0.4rem;
+  cursor: pointer;
+}
+
+.toc-list button:hover {
+  background: var(--bg-alt);
+}
+
+.toc-list button[aria-current="true"] {
+  color: var(--accent-deep);
+  font-weight: 600;
+}
+
+/* -------- Share toast -------- */
+.share-toast {
+  position: fixed;
+  left: 50%;
+  top: 5rem;
+  transform: translateX(-50%) translateY(0.4rem);
+  z-index: 60;
+  background: var(--ink);
+  color: var(--white);
+  font-size: 0.85rem;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.share-toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .share-toast {
+    transition: none;
   }
 }

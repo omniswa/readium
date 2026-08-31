@@ -52,7 +52,7 @@
   <header class="site-header">
     <div class="wrap">
       <a class="brand" href="#top">[Site Name]</a>
-      <button class="btn" type="button" data-open-modal>Join Telegram</button>
+      <button class="btn" type="button" data-open-modal>Read Book</button>
     </div>
   </header>
   
@@ -147,16 +147,71 @@
         <h2>[Section heading — e.g. "Common questions"]</h2>
         <p>[Closing section — FAQs, caveats, or a wrap-up paragraph. This is also a good place for a second, more natural mention of your target keyword.]</p>
         
+        <div class="telegram-cta">
+          <div class="telegram-cta__body">
+            <h3>Get new posts on Telegram</h3>
+            <p>Join the channel for early access to new guides and quick updates.</p>
+            <a class="btn" href="https://t.me/[your-channel]" target="_blank" rel="noopener">Join the channel</a>
+          </div>
+        </div>
+        
       </article>
     </div>
   </main>
   
   <footer>
-    <div class="wrap">
-      <p>[Short author bio or site description.]</p>
-      <p>© [YYYY] [Site Name].</p>
-    </div>
+    <p>© <span id="current-year"></span> • 3NDING • ALL RIGHTS RESERVED</p>
   </footer>
+  
+  <!-- Floating bottom pill: back to top / table of contents / share -->
+  <nav class="pill-nav" aria-label="Page navigation">
+    <button class="pill-nav__btn" type="button" data-action="top" aria-label="Back to top">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <span class="pill-nav__label">Top</span>
+    </button>
+    
+    <span class="pill-nav__divider" aria-hidden="true"></span>
+    
+    <button class="pill-nav__btn" type="button" data-action="toc" aria-haspopup="dialog" aria-expanded="false" aria-controls="toc-backdrop">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <span class="pill-nav__label" data-toc-label>Contents</span>
+    </button>
+    
+    <span class="pill-nav__divider" aria-hidden="true"></span>
+    
+    <button class="pill-nav__btn" type="button" data-action="share" aria-label="Share this post">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="18" cy="5" r="2.5" stroke="currentColor" stroke-width="2" />
+        <circle cx="6" cy="12" r="2.5" stroke="currentColor" stroke-width="2" />
+        <circle cx="18" cy="19" r="2.5" stroke="currentColor" stroke-width="2" />
+        <path d="m8.2 10.8 7.6-4.6M8.2 13.2l7.6 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <span class="pill-nav__label">Share</span>
+    </button>
+  </nav>
+  
+  <!-- Table of contents modal -->
+  <div class="toc-backdrop" id="toc-backdrop">
+    <div class="toc-modal" role="dialog" aria-modal="true" aria-labelledby="toc-modal-title">
+      <div class="toc-modal__head">
+        <h2 id="toc-modal-title">Table of contents</h2>
+        <button class="toc-modal__close" type="button" data-action="toc-close" aria-label="Close table of contents">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+      <ul class="toc-list" id="toc-list"></ul>
+    </div>
+  </div>
+  
+  <div class="share-toast" id="share-toast" role="status" aria-live="polite"></div>
+  
+  <script src="../scripts/blog.js" defer></script>
   
 </body>
 

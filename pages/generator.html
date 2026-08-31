@@ -5,715 +5,500 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Blog Post Generator</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+  <link rel="stylesheet" href="../styles/blog.css">
+  
+  <!-- Marked.js CDN for Markdown Parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  
   <style>
-    @font-face {
-      font-family: "Fraunces";
-      src: url("../fonts/fraunces.woff2");
-      font-weight: 300 700;
-      font-display: swap;
-      size-adjust: 100%;
+    .site-header {
+      margin-bottom: 0 !important;
     }
     
-    @font-face {
-      font-family: "Work Sans";
-      src: url("../fonts/worksans.woff2");
-      font-weight: 380 550;
-      font-display: swap;
+    /* Generator UI enhancements complementing blog.css */
+    .generator-wrap {
+      max-width: 54rem;
+      margin-inline: auto;
     }
     
-    @font-face {
-      font-family: "Space Mono";
-      src: url("../fonts/spacemono.woff2");
-      font-weight: 380 550;
-      font-display: swap;
+    .form-card,
+    .output-card {
+      padding: 2rem;
     }
     
-    :root {
-      --bg: #F7F5EC;
-      --bg-alt: #EFEBDD;
-      --ink: #1F2A20;
-      --ink-soft: #4B5A4C;
-      --accent: #9C7A00;
-      --accent-deep: #7C5C00;
-      --line: #D8D2BE;
-      --white: #FFFDF8;
-      --danger: #A3402A;
-      --display: "Fraunces", serif;
-      --body: "Work Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    .form-group {
+      margin-bottom: 1.5rem;
     }
     
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-    }
-    
-    html {
-      -webkit-text-size-adjust: 100%;
-    }
-    
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: var(--body);
-      font-size: 1rem;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-    
-    .app-header {
-      border-bottom: 1px solid var(--line);
-      padding: clamp(1rem, 4vw, 1.5rem) 1.1rem;
-      background: var(--white);
-    }
-    
-    .app-header h1 {
-      font-family: var(--display);
-      font-size: clamp(1.3rem, 5vw, 1.85rem);
-      margin: 0;
-    }
-    
-    .app-header p {
-      margin: 0;
-      color: var(--ink-soft);
-      font-size: 0.9rem;
-    }
-    
-    .layout {
-      max-width: 40rem;
-      margin: 0 auto;
-      padding: clamp(1.1rem, 4vw, 1.75rem) 1.1rem clamp(2rem, 6vw, 3.5rem);
-    }
-    
-    .panel {
-      background: var(--white);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: clamp(1rem, 4vw, 1.5rem);
-      width: 100%;
-    }
-    
-    .panel+.panel {
-      margin-top: 1.5rem;
-    }
-    
-    .panel h2 {
-      font-family: var(--display);
-      font-size: 1.1rem;
-      margin: 0 0 1.1rem;
-    }
-    
-    label {
+    .form-group label {
       display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 0.3rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 0.45rem;
       color: var(--ink);
     }
     
-    .field {
-      margin-bottom: 1.15rem;
-    }
-    
-    .field .hint {
-      font-size: 0.78rem;
+    .form-hint {
+      font-size: 0.82rem;
       color: var(--ink-soft);
-      margin-top: 0.3rem;
+      margin-top: 0.35rem;
     }
     
-    .field .hint.warn {
-      color: var(--danger);
-    }
-    
-    input[type="text"],
-    input[type="url"],
-    textarea {
+    .form-control {
       width: 100%;
-      max-width: 100%;
-      font-family: var(--body);
-      font-size: 0.95rem;
-      padding: 0.6rem 0.7rem;
+      padding: 0.75rem 1rem;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: var(--bg);
       color: var(--ink);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      font-family: inherit;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
     
-    textarea {
-      font-family: var(--mono);
-      font-size: 0.85rem;
-      resize: vertical;
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(156, 122, 0, 0.18);
+      background: var(--white);
     }
     
-    #content {
-      min-height: 220px;
-    }
-    
-    #metaDescription {
-      min-height: 70px;
-    }
-    
-    input:focus-visible,
-    textarea:focus-visible,
-    button:focus-visible {
-      outline: 3px solid var(--accent);
-      outline-offset: 1px;
-    }
-    
-    .row2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-    
-    @media (max-width: 520px) {
-      .row2 {
-        grid-template-columns: 1fr;
-      }
-    }
-    
-    details {
-      border: 1px dashed var(--line);
-      border-radius: 8px;
-      padding: 0.75rem 0.9rem;
-      margin-bottom: 1.15rem;
-    }
-    
-    details summary {
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    
-    details[open] summary {
-      margin-bottom: 0.9rem;
+    textarea.form-control {
+      min-height: 150px;
+      font-family: monospace, serif;
+      font-size: 0.9rem;
     }
     
     .btn-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.6rem;
-      margin-top: 1.4rem;
+      gap: 0.75rem;
+      align-items: center;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
     }
     
-    button {
-      font-family: var(--body);
-      font-size: 0.9rem;
-      font-weight: 600;
-      padding: 0.65rem 1.1rem;
-      border-radius: 999px;
-      cursor: pointer;
-      border: 1px solid var(--ink);
+    .btn {
+      padding: 1rem;
+    }
+    
+    .code-block-wrap {
+      position: relative;
+      margin-top: 1rem;
+    }
+    
+    pre.code-preview {
       background: var(--ink);
       color: var(--white);
-      flex: 1 1 auto;
-      min-width: 0;
-    }
-    
-    button:hover {
-      background: var(--accent-deep);
-      border-color: var(--accent-deep);
-    }
-    
-    button.secondary {
-      background: transparent;
-      color: var(--ink);
-      border: 1px solid var(--line);
-    }
-    
-    button.secondary:hover {
-      background: var(--bg-alt);
-    }
-    
-    button:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-      background: var(--ink);
-      border-color: var(--ink);
-    }
-    
-    @media (max-width: 480px) {
-      .btn-row button {
-        flex: 1 1 100%;
-      }
-    }
-    
-    .error-list {
-      background: #FBEAE5;
-      border: 1px solid #E3B7A9;
-      color: var(--danger);
-      border-radius: 8px;
-      padding: 0.75rem 1rem;
-      font-size: 0.85rem;
-      margin-bottom: 1.1rem;
-    }
-    
-    .error-list ul {
-      margin: 0.3rem 0 0;
-      padding-left: 1.1rem;
-    }
-    
-    .results-panel h2 {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-    
-    .status-msg {
-      font-size: 0.8rem;
-      color: var(--accent-deep);
-      font-weight: 600;
-    }
-    
-    pre#jsonOutput {
-      background: var(--bg);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 1rem;
-      font-family: var(--mono);
-      font-size: 0.8rem;
+      padding: 1.25rem;
+      border-radius: 10px;
       overflow-x: auto;
-      white-space: pre;
-      color: var(--ink);
-      max-width: 100%;
+      font-size: 0.85rem;
+      line-height: 1.5;
       margin: 0;
+      font-family: monospace;
     }
     
-    .empty-state {
-      font-size: 0.85rem;
-      color: var(--ink-soft);
+    .btn-copy {
+      position: absolute;
+      top: 0.6rem;
+      right: 0.6rem;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.75rem;
+      background: rgba(255, 253, 248, 0.15);
+      border: 1px solid rgba(255, 253, 248, 0.25);
+      color: var(--white);
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    
+    .btn-copy:hover {
+      background: var(--accent);
+      border-color: var(--accent);
     }
   </style>
 </head>
 
 <body>
   
-  <header class="app-header">
-    <h1>Blog Post Generator</h1>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="#">Generator • [3NDING]</a>
+    </div>
   </header>
   
-  <div class="layout">
+  <main class="generator-wrap">
     
-    <section class="panel">
-      <h2>Post details</h2>
-      
-      <div id="errorBox" class="error-list" style="display:none;">
-        <strong>Fix the following before generating:</strong>
-        <ul id="errorItems"></ul>
+    <form id="generator-form" class="form-card" novalidate>
+      <!-- Title -->
+      <div class="form-group">
+        <label for="post-title">Post Title *</label>
+        <input type="text" id="post-title" class="form-control" placeholder="e.g. How to Build a Minimalist Blog" required>
       </div>
       
-      <form id="postForm" novalidate>
-        
-        <div class="field">
-          <label for="title">Title <span aria-hidden="true">*</span></label>
-          <input type="text" id="title" name="title" placeholder="e.g. How to Batch Export Figma Frames" required>
-          <p class="hint" id="titleHint">0 characters (aim for 50–60)</p>
-        </div>
-        
-        <div class="field">
-          <label for="metaDescription">Meta description <span aria-hidden="true">*</span></label>
-          <textarea id="metaDescription" name="metaDescription" placeholder="A 150–160 character summary that includes your main keyword." required></textarea>
-          <p class="hint" id="metaHint">0 characters (aim for 150–160)</p>
-        </div>
-        
-        <div class="field">
-          <label for="content">Content (Markdown) <span aria-hidden="true">*</span></label>
-          <textarea id="content" name="content" placeholder="## A section heading&#10;&#10;Write your post in Markdown. Tables and links are handled automatically." required></textarea>
-          <p class="hint">Supports full Markdown: headings, lists, tables, links, blockquotes, code.</p>
-        </div>
-        
-        <details>
-          <summary>Advanced options</summary>
-          
-          <div class="row2">
-            <div class="field">
-              <label for="author">Author name</label>
-              <input type="text" id="author" name="author" placeholder="omniswa">
-            </div>
-            <div class="field">
-              <label for="siteName">Site name</label>
-              <input type="text" id="siteName" name="siteName" placeholder="3NDING Blog">
-            </div>
-          </div>
-          
-          <div class="field">
-            <label for="origin">Site origin (auto-detected if left blank)</label>
-            <input type="text" id="origin" name="origin" placeholder="https://example.com">
-            <p class="hint" id="originHint">Detected: —</p>
-          </div>
-          
-          <div class="field">
-            <label for="ogImage">Social share image URL (optional)</label>
-            <input type="url" id="ogImage" name="ogImage" placeholder="https://example.com/images/post-og.jpg">
-          </div>
-          
-          <div class="field">
-            <label for="bio">Footer bio (optional)</label>
-            <input type="text" id="bio" name="bio" placeholder="Short author bio or site description.">
-          </div>
-        </details>
-        
-        <div class="btn-row">
-          <button type="submit" id="generateBtn">Generate file</button>
-          <button type="button" id="clearBtn" class="secondary">Clear form</button>
-        </div>
-      </form>
-    </section>
-    
-    <section class="panel results-panel">
-      <h2>
-        JSON
-        <button type="button" id="copyJsonBtn" class="secondary">Copy JSON</button>
-      </h2>
-      <pre id="jsonOutput" class="empty-state">// Generate a post to see its JSON preview here</pre>
+      <!-- Meta Description -->
+      <div class="form-group">
+        <label for="meta-desc">Meta Description *</label>
+        <textarea id="meta-desc" class="form-control" style="min-height: 80px;" placeholder="150–160 character summary of the post..." required></textarea>
+        <div class="form-hint" id="char-counter">0 / 160 characters</div>
+      </div>
       
+      <!-- Markdown Content -->
+      <div class="form-group">
+        <label for="markdown-content">Content (Markdown) *</label>
+        <textarea id="markdown-content" class="form-control" placeholder="Write your post content using Markdown here...
+
+## Section Title
+Your text goes here.
+" required></textarea>
+        <div class="form-hint">Supports full standard Markdown.</div>
+      </div>
+      
+      <!-- Actions -->
       <div class="btn-row">
-        <button type="button" id="downloadBtn" disabled>Download HTML</button>
+        <button type="submit" class="btn">Download HTML</button>
+        <button type="button" id="btn-clear" class="btn btn-ghost">Clear Form</button>
       </div>
-      <p class="status-msg" id="downloadStatus"></p>
-    </section>
+    </form>
     
-  </div>
+    <!-- JSON Output Section -->
+    <section class="output-card" style="border-top: 1px solid var(--line);">
+      <div style="display: flex; justify-content: space-between; align-items: baseline;">
+        <h2 style="font-size: 1.2rem; margin: 0;">Index Record (JSON)</h2>
+      </div>
+      
+      <div class="code-block-wrap">
+        <button type="button" class="btn-copy" id="btn-copy-json">Copy JSON</button>
+        <pre class="code-preview"><code id="json-output">{
+  title: "",
+  excerpt: "",
+  link: ""
+}</code></pre>
+      </div>
+    </section>
+  </main>
+  
+  <div class="share-toast" id="share-toast" role="status" aria-live="polite"></div>
   
   <script>
     (function() {
-      const form = document.getElementById('postForm');
-      const titleEl = document.getElementById('title');
-      const metaEl = document.getElementById('metaDescription');
-      const contentEl = document.getElementById('content');
-      const authorEl = document.getElementById('author');
-      const siteNameEl = document.getElementById('siteName');
-      const originEl = document.getElementById('origin');
-      const ogImageEl = document.getElementById('ogImage');
-      const bioEl = document.getElementById('bio');
+      const form = document.getElementById('generator-form');
+      const titleInput = document.getElementById('post-title');
+      const metaInput = document.getElementById('meta-desc');
+      const contentInput = document.getElementById('markdown-content');
+      const charCounter = document.getElementById('char-counter');
+      const jsonOutput = document.getElementById('json-output');
+      const btnCopyJson = document.getElementById('btn-copy-json');
+      const btnClear = document.getElementById('btn-clear');
+      const shareToast = document.getElementById('share-toast');
       
-      const titleHint = document.getElementById('titleHint');
-      const metaHint = document.getElementById('metaHint');
-      const originHint = document.getElementById('originHint');
-      
-      const errorBox = document.getElementById('errorBox');
-      const errorItems = document.getElementById('errorItems');
-      
-      const jsonOutput = document.getElementById('jsonOutput');
-      const downloadBtn = document.getElementById('downloadBtn');
-      const copyJsonBtn = document.getElementById('copyJsonBtn');
-      const downloadStatus = document.getElementById('downloadStatus');
-      
-      const detectedOrigin = window.location.origin && window.location.origin !== 'null' ?
+      const currentOrigin = (window.location.origin && window.location.origin !== 'null') ?
         window.location.origin :
         'https://example.com';
-      originHint.textContent = 'Detected: ' + detectedOrigin;
       
-      let generatedHtml = '';
-      let generatedSlug = '';
-      let generatedJsonText = '';
+      const currentYear = new Date().getFullYear();
       
-      // ---- helpers ----
+      // Show temporary toast message
+      let toastTimer;
       
-      function slugify(str) {
-        return str
+      function showToast(msg) {
+        shareToast.textContent = msg;
+        shareToast.classList.add('is-visible');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          shareToast.classList.remove('is-visible');
+        }, 2200);
+      }
+      
+      // Generate clean URL slug from title
+      function slugify(text) {
+        return text
+          .toString()
           .toLowerCase()
           .trim()
-          .replace(/['"]/g, '')
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/^-+|-+$/g, '')
-          .replace(/-{2,}/g, '-') || 'untitled-post';
+          .replace(/[\s\W-]+/g, '-')
+          .replace(/^-+|-+$/g, '') || 'post';
       }
       
-      function formatDateLong(date) {
-        return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-      }
-      
-      function estimateReadTime(text) {
-        const words = text.trim().split(/\s+/).filter(Boolean).length;
-        return Math.max(1, Math.round(words / 200));
-      }
-      
-      function escapeHtml(str) {
-        return str
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;');
-      }
-      
-      // Wrap tables in .table-wrap, add scope + data-label; mark external links.
-      function postprocessContent(html, origin) {
-        const container = document.createElement('div');
-        container.innerHTML = html;
+      // Update character count, slug preview, and JSON snippet in real-time
+      function updatePreviews() {
+        const title = titleInput.value.trim();
+        const meta = metaInput.value.trim();
+        const slug = slugify(title);
+        const relativeLink = `blogs/${currentYear}/${slug}.html`;
         
-        container.querySelectorAll('table').forEach(function(table) {
-          const headerCells = Array.from(table.querySelectorAll('thead th'));
-          headerCells.forEach(function(th) { th.setAttribute('scope', 'col'); });
-          const headers = headerCells.map(function(th) { return th.textContent.trim(); });
-          
-          table.querySelectorAll('tbody tr').forEach(function(tr) {
-            Array.from(tr.children).forEach(function(td, i) {
-              if (headers[i]) td.setAttribute('data-label', headers[i]);
-            });
-          });
-          
-          const parent = table.parentElement;
-          if (!parent.classList.contains('table-wrap')) {
-            const wrap = document.createElement('div');
-            wrap.className = 'table-wrap';
-            parent.insertBefore(wrap, table);
-            wrap.appendChild(table);
-          }
-        });
+        charCounter.textContent = `${meta.length} / 160 characters`;
         
-        container.querySelectorAll('a[href]').forEach(function(a) {
-          const href = a.getAttribute('href');
-          try {
-            const resolved = new URL(href, origin);
-            if (resolved.origin !== origin) {
+        const jsonObject = {
+          title: title,
+          excerpt: meta,
+          link: relativeLink
+        };
+        
+        jsonOutput.textContent = JSON.stringify(jsonObject, null, 2);
+      }
+      
+      // Markdown Post-Processing: Table wrapping & Data-labels + External link detection
+      function processMarkdownHtml(rawHtml) {
+        const temp = document.createElement('div');
+        temp.innerHTML = rawHtml;
+        
+        // 1. External Links: Target & Rel detection
+        temp.querySelectorAll('a').forEach(a => {
+          const href = a.getAttribute('href') || '';
+          if (/^https?:\/\//i.test(href)) {
+            try {
+              const url = new URL(href, window.location.href);
+              if (url.origin !== window.location.origin) {
+                a.setAttribute('target', '_blank');
+                a.setAttribute('rel', 'nofollow noopener');
+              }
+            } catch (e) {
               a.setAttribute('target', '_blank');
               a.setAttribute('rel', 'nofollow noopener');
             }
-          } catch (e) {
-            // malformed/relative href with no base — leave untouched
           }
         });
         
-        return container.innerHTML;
-      }
-      
-      function buildLink(slug, year) {
-        return 'blogs/' + year + '/' + slug + '.html';
-      }
-      
-      function buildFullHtml(data) {
-        return '<!DOCTYPE html>\n' +
-          '<html lang="en">\n' +
-          '<head>\n' +
-          '  <meta charset="UTF-8">\n' +
-          '  <meta name="viewport" content="width=device-width, initial-scale=1">\n' +
-          '  <title>' + escapeHtml(data.title) + ' | ' + escapeHtml(data.siteName) + '</title>\n' +
-          '  <meta name="description" content="' + escapeHtml(data.metaDescription) + '">\n' +
-          '  <meta name="robots" content="index, follow">\n' +
-          '  <link rel="canonical" href="' + data.canonicalUrl + '">\n' +
-          '\n' +
-          '  <meta property="og:type" content="article">\n' +
-          '  <meta property="og:title" content="' + escapeHtml(data.title) + '">\n' +
-          '  <meta property="og:description" content="' + escapeHtml(data.metaDescription) + '">\n' +
-          '  <meta property="og:url" content="' + data.canonicalUrl + '">\n' +
-          '  <meta property="og:site_name" content="' + escapeHtml(data.siteName) + '">\n' +
-          '  <meta property="og:image" content="' + data.ogImage + '">\n' +
-          '\n' +
-          '  <meta name="twitter:card" content="summary_large_image">\n' +
-          '  <meta name="twitter:title" content="' + escapeHtml(data.title) + '">\n' +
-          '  <meta name="twitter:description" content="' + escapeHtml(data.metaDescription) + '">\n' +
-          '\n' +
-          '  <meta name="theme-color" content="#F7F5EC">\n' +
-          '\n' +
-          '  <script type="application/ld+json">\n' +
-          '  {\n' +
-          '    "@context": "https://schema.org",\n' +
-          '    "@type": "BlogPosting",\n' +
-          '    "headline": "' + escapeHtml(data.title) + '",\n' +
-          '    "description": "' + escapeHtml(data.metaDescription) + '",\n' +
-          '    "datePublished": "' + data.dateISO + '",\n' +
-          '    "dateModified": "' + data.dateISO + '",\n' +
-          '    "author": { "@type": "Person", "name": "' + escapeHtml(data.author) + '" },\n' +
-          '    "publisher": {\n' +
-          '      "@type": "Organization",\n' +
-          '      "name": "' + escapeHtml(data.siteName) + '"\n' +
-          '    },\n' +
-          '    "mainEntityOfPage": "' + data.canonicalUrl + '"\n' +
-          '  }\n' +
-          '  <\/script>\n' +
-          '\n' +
-          '  <style>\n' + BLOG_CSS + '\n  </style>\n' +
-          '</head>\n' +
-          '\n' +
-          '<body>\n' +
-          '\n' +
-          '  <header class="site-header">\n' +
-          '    <div class="wrap">\n' +
-          '      <a class="brand" href="#top">' + escapeHtml(data.siteName) + '</a>\n' +
-          '      <button class="btn" type="button" data-open-modal>Join Telegram</button>\n' +
-          '    </div>\n' +
-          '  </header>\n' +
-          '\n' +
-          '  <main id="top">\n' +
-          '    <div class="wrap">\n' +
-          '      <article>\n' +
-          '        <header>\n' +
-          '          <h1>' + escapeHtml(data.title) + '</h1>\n' +
-          '          <p class="byline">\n' +
-          '            <span>By ' + escapeHtml(data.author) + '</span>\n' +
-          '            <span class="dot">\u00b7<\/span>\n' +
-          '            <span>' + data.dateLong + '</span>\n' +
-          '            <span class="dot">\u00b7<\/span>\n' +
-          '            <span>' + data.readTime + ' min read</span>\n' +
-          '          </p>\n' +
-          '        </header>\n' +
-          '\n' +
-          '        ' + data.contentHtml + '\n' +
-          '\n' +
-          '      </article>\n' +
-          '    </div>\n' +
-          '  </main>\n' +
-          '\n' +
-          '  <footer>\n' +
-          '    <div class="wrap">\n' +
-          '      <p>' + escapeHtml(data.bio) + '<\/p>\n' +
-          '      <p>\u00a9 ' + data.year + ' ' + escapeHtml(data.siteName) + '.<\/p>\n' +
-          '    </div>\n' +
-          '  </footer>\n' +
-          '\n' +
-          '</body>\n' +
-          '</html>';
-      }
-      
-      // ---- validation ----
-      
-      function validate() {
-        const errors = [];
-        if (!titleEl.value.trim()) errors.push('Title is required.');
-        if (!metaEl.value.trim()) errors.push('Meta description is required.');
-        if (!contentEl.value.trim()) errors.push('Content is required.');
-        return errors;
-      }
-      
-      function showErrors(errors) {
-        if (errors.length === 0) {
-          errorBox.style.display = 'none';
-          errorItems.innerHTML = '';
-          return;
-        }
-        errorBox.style.display = 'block';
-        errorItems.innerHTML = errors.map(function(e) { return '<li>' + e + '</li>'; }).join('');
-      }
-      
-      // ---- live counters ----
-      
-      titleEl.addEventListener('input', function() {
-        const n = titleEl.value.length;
-        titleHint.textContent = n + ' characters (aim for 50\u201360)';
-        titleHint.classList.toggle('warn', n > 0 && (n < 50 || n > 60));
-      });
-      
-      metaEl.addEventListener('input', function() {
-        const n = metaEl.value.length;
-        metaHint.textContent = n + ' characters (aim for 150\u2013160)';
-        metaHint.classList.toggle('warn', n > 0 && (n < 150 || n > 160));
-      });
-      
-      // ---- generate ----
-      
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const errors = validate();
-        showErrors(errors);
-        if (errors.length > 0) return;
+        // 2. Tables: Add data-label to td for mobile layout and wrap in .table-wrap
+        temp.querySelectorAll('table').forEach(table => {
+          const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim());
+          
+          table.querySelectorAll('tbody tr').forEach(tr => {
+            Array.from(tr.children).forEach((td, index) => {
+              if (headers[index]) {
+                td.setAttribute('data-label', headers[index]);
+              }
+            });
+          });
+          
+          const wrapper = document.createElement('div');
+          wrapper.className = 'table-wrap';
+          table.parentNode.insertBefore(wrapper, table);
+          wrapper.appendChild(table);
+        });
         
-        const origin = (originEl.value.trim() || detectedOrigin).replace(/\/+$/, '');
-        const siteName = siteNameEl.value.trim() || '3NDING Blog';
-        const author = authorEl.value.trim() || 'omniswa';
-        const bio = bioEl.value.trim() || ('Written by ' + author + '.');
+        return temp.innerHTML;
+      }
+      
+      // Generate complete downloadable HTML document
+      function buildHtmlDocument(title, meta, markdown) {
+        const slug = slugify(title);
+        const parsedBody = processMarkdownHtml(marked.parse(markdown));
+        
         const now = new Date();
-        const year = now.getFullYear();
-        const dateISO = now.toISOString().slice(0, 10);
-        const dateLong = formatDateLong(now);
-        const slug = slugify(titleEl.value);
-        const link = buildLink(slug, year);
-        const canonicalUrl = origin + '/' + link;
-        const ogImage = ogImageEl.value.trim() || (origin + '/images/' + slug + '-og.webp');
-        const readTime = estimateReadTime(contentEl.value);
+        const isoDate = now.toISOString().split('T')[0];
+        const formattedDate = now.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
         
-        const rawHtml = marked.parse(contentEl.value);
-        const contentHtml = postprocessContent(rawHtml, origin);
+        const wordCount = (markdown.trim().match(/\S+/g) || []).length;
+        const readTime = Math.max(1, Math.ceil(wordCount / 200));
         
-        const data = {
-          title: titleEl.value.trim(),
-          metaDescription: metaEl.value.trim(),
-          siteName: siteName,
-          author: author,
-          bio: bio,
-          canonicalUrl: canonicalUrl,
-          ogImage: ogImage,
-          dateISO: dateISO,
-          dateLong: dateLong,
-          readTime: readTime,
-          contentHtml: contentHtml,
-          year: year
-        };
+        return `<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${title} | 3NDING</title>
+  <meta name="description" content="${meta}">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="${currentOrigin}/blog/${slug}">
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="${title}">
+  <meta property="og:description" content="${meta}">
+  <meta property="og:url" content="${currentOrigin}/blog/${slug}">
+  <meta property="og:site_name" content="3NDING">
+  <meta property="og:image" content="${currentOrigin}/images/${slug}.webp">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${title}">
+  <meta name="twitter:description" content="${meta}">
+  
+  <meta name="theme-color" content="#F7F5EC">
+  
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "${title.replace(/"/g, '\\"')}",
+      "description": "${meta.replace(/"/g, '\\"')}",
+      "datePublished": "${isoDate}",
+      "dateModified": "${isoDate}",
+      "author": { "@type": "Person", "name": "omniswa" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "3NDING"
+      },
+      "mainEntityOfPage": "${currentOrigin}/blog/${slug}"
+    }
+  <\/script>
+  
+  <link rel="preload" href="../fonts/literata.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../styles/blog.css">
+</head>
+
+<body>
+  
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="#top">3NDING</a>
+      <button class="btn" type="button" data-open-modal>Read Book</button>
+    </div>
+  </header>
+  
+  <main id="top">
+    <div class="wrap">
+      <article>
+        <header>
+          <h1>${title}</h1>
+          <p class="byline">
+            <span>By omniswa</span>
+            <span class="dot">·</span>
+            <span>${formattedDate}</span>
+            <span class="dot">·</span>
+            <span>${readTime} min read</span>
+          </p>
+        </header>
         
-        generatedHtml = buildFullHtml(data);
-        generatedSlug = slug;
+        ${parsedBody}
         
-        // JSON preview
-        generatedJsonText = '{\n' +
-          '  title: "' + data.title.replace(/"/g, '\\"') + '",\n' +
-          '  published: "' + dateLong + '",\n' +
-          '  excerpt: "' + data.metaDescription.replace(/"/g, '\\"') + '",\n' +
-          '  link: "' + link + '"\n' +
-          '}';
-        jsonOutput.textContent = generatedJsonText;
-        jsonOutput.classList.remove('empty-state');
+        <div class="telegram-cta">
+          <div class="telegram-cta__body">
+            <h3>Get new posts on Telegram</h3>
+            <p>Join the channel for early access to new guides and quick updates.</p>
+            <a class="btn" href="https://t.me/[your-channel]" target="_blank" rel="noopener">Join the channel</a>
+          </div>
+        </div>
         
-        downloadBtn.disabled = false;
-        downloadStatus.textContent = '';
-      });
+      </article>
+    </div>
+  </main>
+  
+  <footer>
+    <p>© <span id="current-year"></span> • 3NDING • ALL RIGHTS RESERVED</p>
+  </footer>
+  
+  <!-- Floating bottom pill: back to top / table of contents / share -->
+  <nav class="pill-nav" aria-label="Page navigation">
+    <button class="pill-nav__btn" type="button" data-action="top" aria-label="Back to top">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <span class="pill-nav__label">Top</span>
+    </button>
+    
+    <span class="pill-nav__divider" aria-hidden="true"></span>
+    
+    <button class="pill-nav__btn" type="button" data-action="toc" aria-haspopup="dialog" aria-expanded="false" aria-controls="toc-backdrop">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <span class="pill-nav__label" data-toc-label>Contents</span>
+    </button>
+    
+    <span class="pill-nav__divider" aria-hidden="true"></span>
+    
+    <button class="pill-nav__btn" type="button" data-action="share" aria-label="Share this post">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="18" cy="5" r="2.5" stroke="currentColor" stroke-width="2" />
+        <circle cx="6" cy="12" r="2.5" stroke="currentColor" stroke-width="2" />
+        <circle cx="18" cy="19" r="2.5" stroke="currentColor" stroke-width="2" />
+        <path d="m8.2 10.8 7.6-4.6M8.2 13.2l7.6 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <span class="pill-nav__label">Share</span>
+    </button>
+  </nav>
+  
+  <!-- Table of contents modal -->
+  <div class="toc-backdrop" id="toc-backdrop">
+    <div class="toc-modal" role="dialog" aria-modal="true" aria-labelledby="toc-modal-title">
+      <div class="toc-modal__head">
+        <h2 id="toc-modal-title">Table of contents</h2>
+        <button class="toc-modal__close" type="button" data-action="toc-close" aria-label="Close table of contents">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+      <ul class="toc-list" id="toc-list"></ul>
+    </div>
+  </div>
+  
+  <div class="share-toast" id="share-toast" role="status" aria-live="polite"></div>
+  
+  <script src="../scripts/blog.js" defer><\/script>
+</body>
+</html>`;
+      }
       
-      // ---- download ----
-      
-      downloadBtn.addEventListener('click', function() {
-        if (!generatedHtml) return;
-        const blob = new Blob([generatedHtml], { type: 'text/html' });
+      // Download file triggered via Blob
+      function triggerDownload(fileName, content) {
+        const blob = new Blob([content], { type: 'text/html;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = generatedSlug + '.html';
+        a.download = fileName;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        downloadStatus.textContent = 'Downloaded ' + generatedSlug + '.html';
+      }
+      
+      // Realtime listeners
+      titleInput.addEventListener('input', updatePreviews);
+      metaInput.addEventListener('input', updatePreviews);
+      contentInput.addEventListener('input', updatePreviews);
+      
+      // Form submission & validation
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const title = titleInput.value.trim();
+        const meta = metaInput.value.trim();
+        const markdown = contentInput.value.trim();
+        
+        if (!title || !meta || !markdown) {
+          showToast('Fill out fields');
+          return;
+        }
+        
+        const slug = slugify(title);
+        const fileName = `${slug}.html`;
+        const generatedHtml = buildHtmlDocument(title, meta, markdown);
+        
+        triggerDownload(fileName, generatedHtml);
+        showToast(`Downloaded ${fileName}`);
       });
       
-      // ---- copy JSON ----
-      
-      copyJsonBtn.addEventListener('click', function() {
-        if (!generatedJsonText) return;
-        navigator.clipboard.writeText(generatedJsonText).then(function() {
-          const original = copyJsonBtn.textContent;
-          copyJsonBtn.textContent = 'Copied!';
-          setTimeout(function() { copyJsonBtn.textContent = original; }, 1500);
-        });
+      // Clear Form Function
+      btnClear.addEventListener('click', function() {
+        if (confirm('Clear the form?')) {
+          form.reset();
+          updatePreviews();
+          showToast('Form cleared');
+        }
       });
       
-      // ---- clear form ----
-      
-      document.getElementById('clearBtn').addEventListener('click', function() {
-        form.reset();
-        titleHint.textContent = '0 characters (aim for 50\u201360)';
-        metaHint.textContent = '0 characters (aim for 150\u2013160)';
-        titleHint.classList.remove('warn');
-        metaHint.classList.remove('warn');
-        showErrors([]);
-        jsonOutput.textContent = '// Generate a post to see its JSON preview here';
-        jsonOutput.classList.add('empty-state');
-        downloadBtn.disabled = true;
-        downloadStatus.textContent = '';
-        generatedHtml = '';
-        generatedSlug = '';
-        generatedJsonText = '';
+      // Copy JSON button
+      btnCopyJson.addEventListener('click', function() {
+        const text = jsonOutput.textContent;
+        navigator.clipboard.writeText(text)
+          .then(() => showToast('JSON copied'))
+          .catch(() => showToast('Failed to copy'));
       });
       
-      // ---- embedded blog.css (inlined into every generated file so it's self-contained) ----
-      const BLOG_CSS = "@font-face{font-family:\"Fraunces\";src:url(\"../fonts/fraunces.woff2\");font-weight:300 700;font-display:swap;size-adjust:100%}@font-face{font-family:\"Work Sans\";src:url(\"../fonts/worksans.woff2\");font-weight:380 550;font-display:swap}:root{--bg:#F7F5EC;--bg-alt:#EFEBDD;--ink:#1F2A20;--ink-soft:#4B5A4C;--accent:#9C7A00;--accent-deep:#7C5C00;--line:#D8D2BE;--white:#FFFDF8;--display:\"Fraunces\",Georgia,serif;--body:\"Work Sans\",-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--max:42rem}*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.65;-webkit-font-smoothing:antialiased}img,svg{max-width:100%;display:block}a{color:var(--accent-deep);text-decoration-thickness:1px;text-underline-offset:2px}a:hover{color:var(--ink)}a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}.wrap{max-width:var(--max);margin-inline:auto;padding-inline:1.25rem}.site-header{margin-bottom:3rem;border-bottom:1px solid var(--line);padding-block:.9rem}.site-header .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem}.brand{font-family:var(--display);font-weight:700;font-size:1.15rem;color:var(--ink);text-decoration:none;letter-spacing:.01em}.brand:hover{color:var(--accent-deep)}.btn{font-family:var(--body);font-size:.9rem;font-weight:600;border:1px solid var(--ink);background:var(--ink);color:var(--white);padding:.55rem 1rem;border-radius:999px;cursor:pointer;line-height:1;white-space:nowrap}.btn:hover{background:var(--accent-deep);border-color:var(--accent-deep)}h1{font-family:var(--display);font-size:clamp(1.9rem,5vw,2.6rem);line-height:1.15;margin:0 0 .75rem}.byline{display:flex;align-items:center;gap:.4rem;font-size:.8rem;color:var(--ink-soft);margin-bottom:1.5rem}.byline .dot{opacity:.5}article :is(h2,h3){font-family:var(--display);color:var(--ink);line-height:1.25}h2{font-size:1.5rem;margin:2.25rem 0 .75rem}h3{font-size:1.15rem;margin:1.5rem 0 .5rem}p{margin:0 0 1.1rem}article p,article li{max-width:65ch}hr{border:0;height:22px;margin:2.5rem 0;background:no-repeat center/20px 20px url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\" fill=\"%239C7A00\"/><circle cx=\"4\" cy=\"12\" r=\"2\" fill=\"%23D8D2BE\"/><circle cx=\"20\" cy=\"12\" r=\"2\" fill=\"%23D8D2BE\"/></svg>');position:relative}hr::before,hr::after{content:\"\";position:absolute;top:50%;width:calc(50% - 18px);border-top:1px solid var(--line)}hr::before{left:0}hr::after{right:0}.styled-list{list-style:none;margin:0 0 1.25rem;padding:0}.styled-list li{position:relative;padding-left:1.6rem;margin-bottom:.55rem}.styled-list li::before{content:\"\";position:absolute;left:0;top:.55em;width:.55em;height:.55em;background:var(--accent);border-radius:50%}.step-list{list-style:none;counter-reset:step;margin:0 0 1.25rem;padding:0}.step-list li{counter-increment:step;position:relative;padding-left:2.75rem;margin-bottom:1.1rem}.step-list li::before{content:counter(step);position:absolute;left:0;top:0;width:2rem;height:2rem;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;font-size:.95rem;color:var(--white);background:var(--ink);border-radius:50%}.step-list strong{display:block;margin-bottom:.15rem}blockquote{margin:1.75rem 0;padding:.25rem 0 .25rem 1.1rem;border-left:3px solid var(--accent);font-family:var(--display);font-style:italic;font-size:1.1rem;color:var(--ink-soft)}.table-wrap{margin:1.5rem 0 2rem}table{width:100%;border-collapse:collapse;font-size:.95rem}@media (max-width:639px){table,thead,tbody,tr,th,td{display:block;width:100%}thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}tbody tr{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:.85rem 1rem;margin-bottom:.75rem}tbody td{display:flex;justify-content:space-between;gap:1rem;padding:.4rem 0;border-bottom:1px dashed var(--line);text-align:right}tbody td:last-child{border-bottom:0}tbody td::before{content:attr(data-label);font-weight:600;color:var(--ink-soft);text-align:left}}@media (min-width:640px){.table-wrap{border:1px solid var(--line);border-radius:10px;overflow:hidden}thead th{text-align:left;background:var(--bg-alt);font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);padding:.75rem 1rem}tbody td{padding:.75rem 1rem;border-top:1px solid var(--line)}tbody tr:nth-child(even){background:var(--bg-alt)}}footer{border-top:1px solid var(--line);margin-top:3rem;padding-block:2rem;font-size:.9rem;color:var(--ink-soft)}@media (max-width:480px){.site-header .wrap{gap:.5rem}.btn{padding:.5rem .85rem;font-size:.85rem}}";
-      
+      // Initial run
+      updatePreviews();
     })();
   </script>
-  
 </body>
 
 </html>
