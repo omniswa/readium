@@ -124,7 +124,7 @@
   
   <header class="site-header">
     <div class="wrap">
-      <a class="brand" href="#">Generator • [3NDING]</a>
+      <a class="brand" href="#">[3NDING] • GENERATOR</a>
     </div>
   </header>
   
@@ -231,8 +231,8 @@ Your text goes here.
         charCounter.textContent = `${meta.length} / 160 characters`;
         
         const jsonObject = {
-          title: title,
-          excerpt: meta,
+          title: title || "Blog Title",
+          excerpt: meta || "Details of the article",
           link: relativeLink
         };
         
@@ -475,7 +475,7 @@ Your text goes here.
         const generatedHtml = buildHtmlDocument(title, meta, markdown);
         
         triggerDownload(fileName, generatedHtml);
-        showToast(`Downloaded ${fileName}`);
+        showToast(`File downloaded`);
       });
       
       // Clear Form Function
