@@ -338,7 +338,7 @@
             </div>
             <div class="field">
               <label for="siteName">Site name</label>
-              <input type="text" id="siteName" name="siteName" placeholder="readium Blog">
+              <input type="text" id="siteName" name="siteName" placeholder="3NDING Blog">
             </div>
           </div>
           
@@ -615,7 +615,7 @@
         if (errors.length > 0) return;
         
         const origin = (originEl.value.trim() || detectedOrigin).replace(/\/+$/, '');
-        const siteName = siteNameEl.value.trim() || 'readium Blog';
+        const siteName = siteNameEl.value.trim() || '3NDING Blog';
         const author = authorEl.value.trim() || 'omniswa';
         const bio = bioEl.value.trim() || ('Written by ' + author + '.');
         const now = new Date();

@@ -2,7 +2,7 @@
   const params = new URLSearchParams(location.search);
   const bookId = params.get('id');
   
-  const SETTINGS_KEY = 'readium:settings';
+  const SETTINGS_KEY = '3nding:settings';
   const DEFAULT_SETTINGS = { font: 'serif', size: 17, align: 'left', theme: 'paper' };
   const SIZE_MIN = 14,
     SIZE_MAX = 26,
@@ -140,7 +140,7 @@
   el.drawerCloseBtn.addEventListener('click', closeDrawer);
   
   // ---------- progress persistence ----------
-  function progressKey(id) { return 'readium:progress:' + id; }
+  function progressKey(id) { return '3nding:progress:' + id; }
   
   function loadProgress(id) {
     try {

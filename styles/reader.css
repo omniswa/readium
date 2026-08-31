@@ -357,7 +357,7 @@ body.theme-dark {
 /* ---------- Reading surface ---------- */
 .reader-surface {
   background: var(--read-bg);
-  min-height: calc(100vh - 45px);
+  min-height: 100dvh;
   transition: background .2s ease, color .2s ease;
 }
 

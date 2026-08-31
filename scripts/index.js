@@ -20,7 +20,7 @@
   const SKELETON_COUNT = 10;
   const MIN_LOADING_MS = 450; // keeps the skeleton from flashing on fast connections
   const PAGE_SIZE = 10; // books shown per page; keeps pagination visibly working even on a small catalog
-  const FAVORITES_KEY = 'readium:favorites';
+  const FAVORITES_KEY = '3nding:favorites';
   
   let allBooks = [];
   let favorites = loadFavorites();
